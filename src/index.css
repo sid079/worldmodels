@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+  body {
+    @apply bg-background text-text-primary font-mono text-sm;
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
+    background-size: 24px 24px;
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Instrument Serif', Georgia, serif;
+  }
+  .font-mono {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+}
