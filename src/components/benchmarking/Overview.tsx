@@ -1,6 +1,16 @@
 import { useState, useMemo } from 'react'
 import { companies } from '../../data/companies'
 import type { CompanyOverview, Stage } from '../../data/companies'
+import ScatterPlot from '../ScatterPlot'
+
+const dotClass: Record<string, string> = {
+  revenue: 'stage-dot-revenue',
+  'pre-revenue': 'stage-dot-pre-revenue',
+  'pre-product': 'stage-dot-pre-product',
+  production: 'stage-dot-production',
+  research: 'stage-dot-research',
+  'limited-access': 'stage-dot-limited',
+}
 
 function StageDot({ stage }: { stage: Stage }) {
   const config = {
@@ -14,17 +24,19 @@ function StageDot({ stage }: { stage: Stage }) {
   const { color, label } = config[stage] || config['pre-revenue']
   return (
     <span className="flex items-center gap-2" title={label}>
-      <span className={`h-2 w-2 shrink-0 rounded-full ${color}`} />
+      <span className={`h-2 w-2 shrink-0 rounded-full ${color} ${dotClass[stage] || ''}`} />
       <span className="font-mono text-xs">{label}</span>
     </span>
   )
 }
 
 type SortKey = keyof CompanyOverview | null
+type ViewMode = 'table' | 'scatter'
 
 export default function Overview() {
   const [sortKey, setSortKey] = useState<SortKey>(null)
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
+  const [view, setView] = useState<ViewMode>('table')
 
   const sortedCompanies = useMemo(() => {
     if (!sortKey) return companies
@@ -57,60 +69,90 @@ export default function Overview() {
   ]
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[900px] border-collapse">
-        <thead>
-          <tr className="border-b border-[rgba(255,255,255,0.06)]">
-            {headers.map(({ key, label }) => (
-              <th
-                key={label}
-                onClick={() => key && handleSort(key)}
-                className={`cursor-pointer px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-text-muted ${
-                  key ? 'hover:text-accent' : ''
-                } ${sortKey === key ? 'text-accent' : ''}`}
-              >
-                {label}
-                {sortKey === key && (
-                  <span className="ml-1">{sortDir === 'asc' ? '↑' : '↓'}</span>
-                )}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {sortedCompanies.map((company) => (
-            <tr
-              key={company.id}
-              className="border-b border-[rgba(255,255,255,0.06)] transition-colors hover:bg-surface/30"
-            >
-              <td className="px-4 py-3 font-mono text-sm text-text-primary">
-                {company.overview.name}
-              </td>
-              <td className="px-4 py-3 font-mono text-sm tabular-nums text-text-secondary">
-                {company.overview.founded}
-              </td>
-              <td className="px-4 py-3 font-mono text-sm text-text-secondary">
-                {company.overview.hq}
-              </td>
-              <td className="px-4 py-3 font-mono text-sm tabular-nums text-text-secondary">
-                {company.overview.funding}
-              </td>
-              <td className="px-4 py-3 font-mono text-sm tabular-nums text-text-secondary">
-                {company.overview.valuation}
-              </td>
-              <td className="px-4 py-3 font-mono text-sm tabular-nums text-text-secondary">
-                {company.overview.teamSize}
-              </td>
-              <td className="max-w-[200px] px-4 py-3 font-mono text-xs text-text-secondary">
-                {company.overview.keyFounders}
-              </td>
-              <td className="px-4 py-3">
-                <StageDot stage={company.overview.stage} />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div>
+      {/* View toggle */}
+      <div className="mb-6 flex items-center gap-2">
+        <button
+          onClick={() => setView('table')}
+          className={`rounded px-3 py-1.5 font-mono text-xs transition-colors ${
+            view === 'table'
+              ? 'bg-accent/10 text-accent'
+              : 'text-text-muted hover:text-text-secondary'
+          }`}
+        >
+          <span className="mr-1.5">&#9638;</span>Table
+        </button>
+        <button
+          onClick={() => setView('scatter')}
+          className={`rounded px-3 py-1.5 font-mono text-xs transition-colors ${
+            view === 'scatter'
+              ? 'bg-accent/10 text-accent'
+              : 'text-text-muted hover:text-text-secondary'
+          }`}
+        >
+          <span className="mr-1.5">&#8226;&#8226;</span>Scatter
+        </button>
+      </div>
+
+      {view === 'scatter' ? (
+        <ScatterPlot />
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[900px] border-collapse">
+            <thead>
+              <tr className="border-b border-[rgba(255,255,255,0.06)]">
+                {headers.map(({ key, label }) => (
+                  <th
+                    key={label}
+                    onClick={() => key && handleSort(key)}
+                    className={`cursor-pointer px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-text-muted ${
+                      key ? 'hover:text-accent' : ''
+                    } ${sortKey === key ? 'text-accent' : ''}`}
+                  >
+                    {label}
+                    {sortKey === key && (
+                      <span className="ml-1">{sortDir === 'asc' ? '↑' : '↓'}</span>
+                    )}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {sortedCompanies.map((company) => (
+                <tr
+                  key={company.id}
+                  className="border-b border-[rgba(255,255,255,0.06)] transition-colors hover:bg-surface/30"
+                >
+                  <td className="px-4 py-3 font-mono text-sm text-text-primary">
+                    {company.overview.name}
+                  </td>
+                  <td className="px-4 py-3 font-mono text-sm tabular-nums text-text-secondary">
+                    {company.overview.founded}
+                  </td>
+                  <td className="px-4 py-3 font-mono text-sm text-text-secondary">
+                    {company.overview.hq}
+                  </td>
+                  <td className="px-4 py-3 font-mono text-sm tabular-nums text-text-secondary">
+                    {company.overview.funding}
+                  </td>
+                  <td className="px-4 py-3 font-mono text-sm tabular-nums text-text-secondary">
+                    {company.overview.valuation}
+                  </td>
+                  <td className="px-4 py-3 font-mono text-sm tabular-nums text-text-secondary">
+                    {company.overview.teamSize}
+                  </td>
+                  <td className="max-w-[200px] px-4 py-3 font-mono text-xs text-text-secondary">
+                    {company.overview.keyFounders}
+                  </td>
+                  <td className="px-4 py-3">
+                    <StageDot stage={company.overview.stage} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }
