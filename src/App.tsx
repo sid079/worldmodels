@@ -3,9 +3,10 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Thesis from './components/Thesis'
 import CompetitiveBenchmarking from './components/CompetitiveBenchmarking'
 import AboutMe from './components/AboutMe'
+import GTMForOdyssey from './components/GTMForOdyssey'
 import KonamiEasterEgg from './components/KonamiEasterEgg'
 
-type MainTab = 'thesis' | 'benchmarking' | 'about'
+type MainTab = 'thesis' | 'benchmarking' | 'about' | 'gtm-odyssey'
 
 function App() {
   const [activeTab, setActiveTab] = useState<MainTab>('thesis')
@@ -37,7 +38,7 @@ function App() {
       <nav className="sticky top-0 z-50 border-b border-[rgba(255,255,255,0.06)] bg-background/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center gap-1">
-            {(['thesis', 'benchmarking', 'about'] as const).map((tab) => (
+            {(['thesis', 'benchmarking', 'gtm-odyssey', 'about'] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => handleTabChange(tab)}
@@ -49,6 +50,7 @@ function App() {
               >
                 {tab === 'thesis' && 'Thesis'}
                 {tab === 'benchmarking' && 'Competitive Benchmarking'}
+                {tab === 'gtm-odyssey' && 'GTM For Odyssey'}
                 {tab === 'about' && 'Why Me?'}
               </button>
             ))}
@@ -79,6 +81,17 @@ function App() {
               transition={{ duration: 0.2, ease: 'easeOut' }}
             >
               <CompetitiveBenchmarking />
+            </motion.div>
+          )}
+          {activeTab === 'gtm-odyssey' && (
+            <motion.div
+              key="gtm-odyssey"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+            >
+              <GTMForOdyssey />
             </motion.div>
           )}
           {activeTab === 'about' && (

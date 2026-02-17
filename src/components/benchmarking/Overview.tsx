@@ -90,24 +90,24 @@ export default function Overview() {
               : 'text-text-muted hover:text-text-secondary'
           }`}
         >
-          <span className="mr-1.5">&#8226;&#8226;</span>Scatter
+          <span className="mr-1.5">&#8226;&#8226;</span>Graph
         </button>
       </div>
 
       {view === 'scatter' ? (
         <ScatterPlot />
       ) : (
-        <div className="overflow-x-auto">
+        <div className="sticky-table-wrap rounded-lg border border-[rgba(255,255,255,0.06)]">
           <table className="w-full min-w-[900px] border-collapse">
             <thead>
               <tr className="border-b border-[rgba(255,255,255,0.06)]">
-                {headers.map(({ key, label }) => (
+                {headers.map(({ key, label }, i) => (
                   <th
                     key={label}
                     onClick={() => key && handleSort(key)}
                     className={`cursor-pointer px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-text-muted ${
                       key ? 'hover:text-accent' : ''
-                    } ${sortKey === key ? 'text-accent' : ''}`}
+                    } ${sortKey === key ? 'text-accent' : ''} ${i === 0 ? 'min-w-[140px]' : ''}`}
                   >
                     {label}
                     {sortKey === key && (
@@ -123,7 +123,7 @@ export default function Overview() {
                   key={company.id}
                   className="border-b border-[rgba(255,255,255,0.06)] transition-colors hover:bg-surface/30"
                 >
-                  <td className="px-4 py-3 font-mono text-sm text-text-primary">
+                  <td className="px-4 py-3 font-mono text-sm text-text-primary whitespace-nowrap">
                     {company.overview.name}
                   </td>
                   <td className="px-4 py-3 font-mono text-sm tabular-nums text-text-secondary">

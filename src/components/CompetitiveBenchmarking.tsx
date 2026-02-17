@@ -24,7 +24,7 @@ export default function CompetitiveBenchmarking() {
   return (
     <div>
       {/* Secondary sub-tab bar */}
-      <div className="mb-8 flex gap-1 border-b border-[rgba(255,255,255,0.06)]">
+      <div className="sticky top-[69px] z-40 -mx-6 mb-8 flex gap-1 border-b border-[rgba(255,255,255,0.06)] bg-background/95 px-6 backdrop-blur-md">
         {subTabs.map((tab) => (
           <button
             key={tab.id}
@@ -107,6 +107,7 @@ export default function CompetitiveBenchmarking() {
             <Demos />
           </motion.div>
         )}
+
       </AnimatePresence>
     </div>
   )

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef, useMemo, Fragment } from 'react'
+import { useState, useCallback, useMemo, Fragment } from 'react'
 import { motion } from 'framer-motion'
 import { companies } from '../../data/companies'
 import type { Company } from '../../data/companies'
@@ -130,105 +130,6 @@ function buildRows(): RowData[] {
   return rows
 }
 
-/* ── Animated counter hook ─────────────────────────────────────────── */
-
-function useCountUp(end: number, duration = 600): number {
-  const [count, setCount] = useState(0)
-  const frameRef = useRef(0)
-
-  useEffect(() => {
-    const t0 = performance.now()
-    function tick(now: number) {
-      const t = Math.min((now - t0) / duration, 1)
-      const eased = 1 - Math.pow(1 - t, 3)
-      setCount(Math.round(eased * end))
-      if (t < 1) frameRef.current = requestAnimationFrame(tick)
-    }
-    frameRef.current = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(frameRef.current)
-  }, [end, duration])
-
-  return count
-}
-
-/* ── Radial progress ring ──────────────────────────────────────────── */
-
-function ProgressRing({
-  value,
-  max,
-  size = 40,
-}: {
-  value: number
-  max: number
-  size?: number
-}) {
-  const r = (size - 5) / 2
-  const C = 2 * Math.PI * r
-  const offset = C - (value / max) * C
-
-  return (
-    <svg width={size} height={size} className="shrink-0 -rotate-90">
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={r}
-        fill="none"
-        stroke="rgba(255,255,255,0.06)"
-        strokeWidth={2.5}
-      />
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={r}
-        fill="none"
-        stroke="#E8FF59"
-        strokeWidth={2.5}
-        strokeDasharray={C}
-        strokeDashoffset={offset}
-        strokeLinecap="round"
-        className="transition-all duration-700 ease-out"
-      />
-    </svg>
-  )
-}
-
-/* ── Stat card ─────────────────────────────────────────────────────── */
-
-function StatCard({
-  num,
-  total,
-  label,
-  index,
-}: {
-  num: number | string
-  total?: number
-  label: string
-  index: number
-}) {
-  const isNum = typeof num === 'number'
-  const animated = useCountUp(isNum ? num : 0)
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1 + index * 0.09, duration: 0.4 }}
-      className="flex items-center gap-3 rounded-lg border border-[rgba(255,255,255,0.06)] bg-surface/50 px-5 py-4"
-    >
-      {isNum && total != null && <ProgressRing value={animated} max={total} />}
-      <div>
-        <p className="font-mono text-xl font-bold leading-tight text-accent">
-          {isNum && total != null
-            ? `${animated} of ${total}`
-            : isNum
-              ? animated
-              : num}
-        </p>
-        <p className="mt-1 font-mono text-[11px] text-text-muted">{label}</p>
-      </div>
-    </motion.div>
-  )
-}
 
 /* ── 3-D tilt card (matches Thesis page) ───────────────────────────── */
 
@@ -366,41 +267,15 @@ export default function Pricing() {
         </p>
       </motion.div>
 
-      {/* ── Stat cards strip ──────────────────────────────────────── */}
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatCard
-          num={3}
-          total={12}
-          label="Companies with public pricing"
-          index={0}
-        />
-        <StatCard num="$0–$250/mo" label="Consumer price range" index={1} />
-        <StatCard
-          num={2}
-          total={12}
-          label="Companies with public API pricing"
-          index={2}
-        />
-        <StatCard
-          num={0}
-          total={12}
-          label="Standardized enterprise pricing"
-          index={3}
-        />
-      </div>
-
       {/* ── Grouped pricing table ─────────────────────────────────── */}
-      <div className="overflow-x-auto rounded-lg border border-[rgba(255,255,255,0.06)]">
+      <div className="sticky-table-wrap rounded-lg border border-[rgba(255,255,255,0.06)]">
         <table className="w-full min-w-[900px] border-collapse">
-          <thead
-            className="sticky top-0 z-10"
-            style={{ background: '#0A0A0B' }}
-          >
+          <thead>
             <tr className="border-b border-[rgba(255,255,255,0.08)]">
-              {COLUMNS.map((col) => (
+              {COLUMNS.map((col, i) => (
                 <th
                   key={col}
-                  className="px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-text-muted"
+                  className={`px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-text-muted ${i === 0 ? 'min-w-[140px]' : ''}`}
                 >
                   {col}
                 </th>
@@ -443,7 +318,7 @@ export default function Pricing() {
                     className="border-b border-[rgba(255,255,255,0.04)] transition-colors"
                     style={{ borderLeft: `3px solid ${cfg.color}` }}
                   >
-                    <td className="px-4 py-3 font-mono text-sm font-medium text-text-primary">
+                    <td className="px-4 py-3 font-mono text-sm font-medium text-text-primary whitespace-nowrap">
                       {row.company.overview.name}
                     </td>
                     <td className="px-4 py-3 font-mono text-xs text-text-secondary">
