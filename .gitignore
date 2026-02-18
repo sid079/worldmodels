@@ -7,5 +7,3 @@ dist
 
 # Large demo recordings (exceed GitHub 100MB limit)
 public/demos/**/*.mov
-public/demos/**/*.mp4
-!public/demos/odyssey-airbnb/*.mp4
