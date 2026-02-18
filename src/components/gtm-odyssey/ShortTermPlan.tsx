@@ -1,19 +1,7 @@
+import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { icpSegments, tierConfig } from '../../data/odysseyGTM'
 import type { Tier } from '../../data/odysseyGTM'
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06, delayChildren: 0.05 },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 8 },
-  visible: { opacity: 1, y: 0 },
-}
 
 function ConvictionStars({ count }: { count: number }) {
   return (
@@ -31,7 +19,7 @@ function TierBadge({ tier }: { tier: Tier }) {
   const cfg = tierConfig[tier]
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-mono text-xs"
+      className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 font-mono text-[10px]"
       style={{ backgroundColor: `${cfg.color}15`, color: cfg.color }}
     >
       <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: cfg.color }} />
@@ -40,34 +28,44 @@ function TierBadge({ tier }: { tier: Tier }) {
   )
 }
 
-function TargetPill({ name }: { name: string }) {
-  const isHighlighted = name.includes('already validated') || name.includes('Hackathon Alumni')
-  return (
-    <span
-      className={`inline-block rounded-full px-3 py-1 font-mono text-xs transition-colors ${
-        isHighlighted
-          ? 'border border-accent/40 bg-accent/10 text-accent'
-          : 'border border-[rgba(255,255,255,0.06)] bg-surface/50 text-text-secondary'
-      }`}
-    >
-      {name}
-    </span>
-  )
+interface FlatRow {
+  targetName: string
+  segmentName: string
+  tier: Tier
+  acvLow: string
+  acvHigh: string
+  conviction: number
+  isHighlighted: boolean
 }
 
 export default function ShortTermPlan() {
   const shortTermSegments = icpSegments.filter((s) => s.tier === 'short')
 
+  const rows: FlatRow[] = useMemo(() => {
+    return shortTermSegments.flatMap((seg) =>
+      seg.namedTargets.map((target) => ({
+        targetName: target,
+        segmentName: seg.name,
+        tier: seg.tier,
+        acvLow: seg.chequeSize.low,
+        acvHigh: seg.chequeSize.high,
+        conviction: seg.conviction,
+        isHighlighted:
+          target.includes('already validated') || target.includes('Hackathon Alumni'),
+      }))
+    )
+  }, [shortTermSegments])
+
   return (
     <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="space-y-10"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-8"
     >
       {/* Intro */}
       <motion.div
-        variants={itemVariants}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
         className="rounded-lg border border-accent/30 bg-accent/5 p-6"
       >
         <p className="font-serif text-lg text-accent">Short Term: 0–6 Months</p>
@@ -78,96 +76,51 @@ export default function ShortTermPlan() {
         </p>
       </motion.div>
 
-      {/* Segment Deep Dives */}
-      {shortTermSegments.map((seg) => (
-        <motion.div
-          key={seg.id}
-          variants={itemVariants}
-          className="rounded-lg border border-[rgba(255,255,255,0.06)] bg-surface/30 transition-all duration-200 hover:border-accent/20"
-        >
-          {/* Header */}
-          <div className="border-b border-[rgba(255,255,255,0.06)] px-6 py-5">
-            <div className="flex flex-wrap items-center gap-3">
-              <h3 className="font-serif text-xl text-accent">{seg.name}</h3>
-              <TierBadge tier={seg.tier} />
-              <ConvictionStars count={seg.conviction} />
-            </div>
-          </div>
-
-          <div className="space-y-6 p-6">
-            {/* ICP + Decision Makers */}
-            <div className="grid gap-6 md:grid-cols-2">
-              <div>
-                <p className="mb-1 font-mono text-xs font-semibold uppercase tracking-wider text-text-muted">
-                  ICP Definition
-                </p>
-                <p className="font-mono text-sm leading-relaxed text-text-secondary">{seg.icp}</p>
-              </div>
-              <div>
-                <p className="mb-1 font-mono text-xs font-semibold uppercase tracking-wider text-text-muted">
-                  Decision Makers
-                </p>
-                <p className="font-mono text-sm text-text-secondary">{seg.decisionMakers}</p>
-              </div>
-            </div>
-
-            {/* Named Targets */}
-            <div>
-              <p className="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-text-muted">
-                Named Targets
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {seg.namedTargets.map((target) => (
-                  <TargetPill key={target} name={target} />
-                ))}
-              </div>
-            </div>
-
-            {/* Value Proposition */}
-            <div>
-              <p className="mb-1 font-mono text-xs font-semibold uppercase tracking-wider text-text-muted">
-                Value Proposition
-              </p>
-              <p className="font-mono text-sm leading-relaxed text-text-secondary">
-                {seg.valueProposition}
-              </p>
-            </div>
-
-            {/* Cheque Size Math — the star section */}
-            <div className="rounded-lg border border-accent/20 bg-accent/5 p-5">
-              <div className="flex flex-wrap items-baseline justify-between gap-4">
-                <div>
-                  <p className="mb-1 font-mono text-xs font-semibold uppercase tracking-wider text-text-muted">
-                    {seg.chequeSize.label}
-                  </p>
-                  <p className="font-mono text-2xl font-semibold text-accent">
-                    {seg.chequeSize.low}–{seg.chequeSize.high}
-                    <span className="ml-2 text-sm text-text-muted">/yr</span>
-                  </p>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <p className="font-mono text-xs text-text-muted">Total Addressable</p>
-                    <p className="font-mono text-lg text-text-primary">{seg.totalAddressable}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-mono text-xs text-text-muted">Target Accounts</p>
-                    <p className="font-mono text-lg text-text-primary">{seg.targetAccountCount}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-4 border-t border-accent/10 pt-4">
-                <p className="font-mono text-xs font-semibold uppercase tracking-wider text-text-muted">
-                  The Math
-                </p>
-                <p className="mt-1 font-mono text-xs leading-relaxed text-text-secondary">
-                  {seg.chequeSize.math}
-                </p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      ))}
+      {/* Table */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1, duration: 0.3 }}
+        className="overflow-x-auto rounded-lg border border-[rgba(255,255,255,0.06)]"
+      >
+        <table className="w-full border-collapse font-mono text-xs">
+          <thead>
+            <tr className="border-b border-[rgba(255,255,255,0.1)] bg-surface/40">
+              <th className="whitespace-nowrap px-4 py-3 text-left font-semibold text-accent">
+                Target Company
+              </th>
+              <th className="whitespace-nowrap px-4 py-3 text-left font-semibold text-accent">
+                ICP
+              </th>
+              <th className="whitespace-nowrap px-4 py-3 text-left font-semibold text-accent">
+                ACV Range
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, idx) => (
+              <tr
+                key={`${row.targetName}-${idx}`}
+                className={`border-b border-[rgba(255,255,255,0.04)] transition-colors hover:bg-surface/40 ${
+                  row.isHighlighted ? 'bg-accent/[0.03]' : idx % 2 === 0 ? 'bg-surface/10' : ''
+                }`}
+              >
+                <td className="whitespace-nowrap px-4 py-3">
+                  <span className={row.isHighlighted ? 'font-semibold text-accent' : 'text-text-primary'}>
+                    {row.targetName}
+                  </span>
+                </td>
+                <td className="px-4 py-3 text-text-secondary">
+                  {row.segmentName}
+                </td>
+                <td className="whitespace-nowrap px-4 py-3 font-semibold text-accent">
+                  {row.acvLow}–{row.acvHigh}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </motion.div>
     </motion.div>
   )
 }

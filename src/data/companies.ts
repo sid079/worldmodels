@@ -353,6 +353,54 @@ export const companies: Company[] = [
     },
   },
   {
+    id: 'decart',
+    overview: {
+      id: 'decart',
+      name: 'Decart',
+      founded: '2023',
+      hq: 'Tel Aviv',
+      funding: '$153M',
+      valuation: 'Undisclosed',
+      teamSize: '~20',
+      keyFounders: 'Ido Hakimi, Yonatan Sharvit',
+      stage: 'pre-revenue',
+      category: 'adjacent',
+    },
+    product: {
+      productNames: ['Oasis'],
+      coreCapability: 'Real-time interactive world generation. 1M users in 72 hours.',
+      inputModalities: ['Text', 'Image', 'Game actions'],
+      outputFormat: ['Interactive worlds', 'Real-time streaming'],
+      keyDifferentiator: 'Fastest viral adoption in world models. Burns <$10M of $153M raised.',
+      targetVerticals: ['Gaming', 'Consumer'],
+      accessModel: 'Consumer app / API',
+    },
+    pricing: {
+      model: 'Consumer + API (planned)',
+      consumerTiers: 'Free access',
+      apiPricing: 'None yet',
+      enterprise: 'Planned',
+      commercialRights: 'Unknown',
+      revenueStage: 'Pre-Revenue',
+    },
+    technology: {
+      architectureType: 'Real-time interactive world model',
+      trainingDataStrategy: 'Proprietary / User interaction data',
+      modelSize: 'Undisclosed',
+      outputQuality: 'Real-time interactive',
+      openSource: 'No',
+      keyTechnicalInnovation: 'Consumer-scale real-time world generation. Viral distribution loop.',
+      category: 'interactive-streaming',
+    },
+    gtm: {
+      growthModel: 'Consumer viral / PLG',
+      distributionChannels: ['Consumer app', 'Web'],
+      keyPartnerships: ['Sequoia', 'a16z'],
+      bdSalesTeam: 'Early',
+      community: ['1M+ users'],
+    },
+  },
+  {
     id: 'iconic-ai',
     overview: {
       id: 'iconic-ai',
@@ -642,23 +690,185 @@ export const companies: Company[] = [
   },
 ];
 
+export const heroStats = [
+  { label: 'Capital deployed (12mo)', value: '$3.4B+' },
+  { label: 'World model startups founded (2024-25)', value: '15+' },
+  { label: 'Open-source model downloads', value: '5M+' },
+  { label: 'Adjacent TAM (Digital Twins, 2030)', value: '$150B' },
+  { label: 'Spatial AI market CAGR (2025-30)', value: '~40%' },
+];
+
 export const thesisPillars = [
   {
-    title: 'The Window is Narrow',
-    content: 'Spatial AI companies must establish enterprise customers, pricing sophistication, and partnership ecosystems before big tech (NVIDIA, Google, Meta, Tencent) commoditizes the foundation model layer. The strategic window is 12–24 months.',
+    title: 'The GPT-3 Moment for Spatial AI',
+    stat: '39%',
+    statLabel: 'US adult GenAI adoption in 2 yrs',
+    thesis: 'LLMs taught machines to read and write. World models teach them to see and build.',
+    bullets: [
+      { highlight: 'World Labs', text: 'Founding → unicorn in 4 months, raising at $5B' },
+      { highlight: 'AMI Labs', text: '€3B pre-product — largest pre-launch raise in AI history' },
+      { highlight: 'Runway', text: '~$90M ARR, multi-year Adobe partnership' },
+      { highlight: 'Allocators', text: 'a16z, Sequoia, NEA, General Atlantic, Khosla' },
+    ],
   },
   {
-    title: 'Three Distinct Playbooks',
-    content: 'World Labs leads with PLG (120K+ free accounts in 8 weeks). Odyssey bets on developer-led growth with a real-time interactive API. SpAItial leverages European deep-tech credibility and academic moat. Each requires a fundamentally different BD/GTM approach.',
+    title: 'Two Architectures Splitting the Market',
+    stat: '2',
+    statLabel: 'paradigms, different economics',
+    thesis: 'Different customers, different moats. Understanding this split is essential.',
+    bullets: [
+      { highlight: 'Exportable 3D', text: 'World Labs, SpAItial — meshes → Unity/Unreal/Blender' },
+      { highlight: 'Real-time Sim', text: 'Odyssey, Genie 3, Runway — 20-24 FPS interactive streams' },
+      { highlight: 'JEPA', text: 'AMI Labs — bets the autoregressive approach is wrong entirely' },
+    ],
   },
   {
-    title: 'Big Tech is the Tide, Not the Competition',
-    content: "NVIDIA Cosmos (free models, 2M+ downloads), Tencent's open-source blitz (3M+ HuggingFace downloads), and Google's $250/month walled garden reshape competitive dynamics. Startups must differentiate on UX, vertical specialization, and speed — not model scale.",
+    title: 'Foundation Layer Commoditizes by Late 2027',
+    stat: '~24mo',
+    statLabel: 'historical time-to-commodity',
+    thesis: 'Durable value = proprietary data + workflow integration + vertical expertise. Not model params.',
+    bullets: [
+      { highlight: 'NVIDIA Cosmos', text: 'Free, 2M+ downloads' },
+      { highlight: 'Tencent', text: 'Open-source, 3M+ HuggingFace downloads' },
+      { highlight: 'Meta', text: 'V-JEPA 2 under MIT license' },
+      { highlight: 'Precedent', text: 'Midjourney ($500M rev, 0 funding) > Stability AI ($225M raised, nearly collapsed)' },
+    ],
+  },
+];
+
+export const rightToWinMoats = [
+  {
+    icon: '◆',
+    type: 'PROPRIETARY DATA',
+    definition: 'Training data that cannot be scraped, licensed, or replicated.',
+    companies: ['General Intuition', 'Odyssey', 'NVIDIA'],
+    details: ['3.8B action-labeled gaming clips', '360° camera rigs', '20M hours curated'],
+  },
+  {
+    icon: '◆',
+    type: 'WORKFLOW LOCK-IN',
+    definition: 'Deep integration into tools professionals already use daily.',
+    companies: ['Runway', 'World Labs'],
+    details: ['Adobe Premiere/Firefly partnership', 'Unity/Unreal/Blender export'],
+  },
+  {
+    icon: '◆',
+    type: 'DISTRIBUTION AT SCALE',
+    definition: 'Can you reach 100K users in your first quarter?',
+    companies: ['World Labs', 'NVIDIA Cosmos', 'Runway'],
+    details: ['120K accounts, 8 weeks', '2M+ downloads, open source', '300K+ customers'],
+  },
+  {
+    icon: '◆',
+    type: 'TALENT DENSITY',
+    definition: 'Concentration of foundational researchers who invented the underlying tech.',
+    companies: ['World Labs', 'AMI Labs', 'SpAItial'],
+    details: ['Fei-Fei Li, NeRF inventor', 'Yann LeCun, Turing Award', 'Matthias Niessner, Stable Diffusion angel'],
+  },
+  {
+    icon: '◆',
+    type: 'REGULATORY MOAT',
+    definition: 'Geographic or compliance advantages that create structural barriers.',
+    companies: ['SpAItial', 'AMI Labs'],
+    details: ['EU AI Act native, Munich', 'Paris, €109B French AI commitment'],
+  },
+];
+
+export const playerArchetypes = [
+  {
+    company: 'World Labs',
+    archetype: 'First-Mover Platform',
+    signal: '$5B valuation talks, 120K accounts',
+    thesis:
+      'Strongest brand and broadest positioning, but only ~43 employees and no BD/sales hires. The Adobe-Runway partnership model is the template World Labs needs to replicate with a major game engine or VFX studio.',
+  },
+  {
+    company: 'Odyssey',
+    archetype: 'Developer Infrastructure',
+    signal: 'Proprietary 360° data capture, Ex-Cruise/Wayve DNA',
+    thesis:
+      'Oliver Cameron (ex-Cruise VP) and Jeff Hawke (ex-Wayve) bring autonomous vehicle perception DNA. At $27M raised, Odyssey is leaner but its proprietary data capture creates a genuine moat. Critical gap: pre-revenue with an API only weeks old.',
+  },
+  {
+    company: 'Runway',
+    archetype: 'GTM-Mature Category Leader',
+    signal: '~$90M ARR, Adobe partnership, $5.3B valuation',
+    thesis:
+      'The revenue benchmark. $860M raised, GWM-1 launch extends into world models. Risk: world model capabilities are incremental extensions of video generation rather than architecturally native to 3D.',
+  },
+  {
+    company: 'SpAItial',
+    archetype: 'European Deep-Tech Contender',
+    signal: 'Synthesia playbook, Matthias Niessner, $13M seed',
+    thesis:
+      'Follows the Synthesia playbook: academic research at TU Munich → deep-tech startup → category leader. Spatial foundation model operates natively on 3D structures. The angel investor roster — Robin Rombach, Jon Barron — reads like a spatial AI hall of fame.',
+  },
+  {
+    company: 'AMI Labs',
+    archetype: 'Anti-LLM Philosophical Bet',
+    signal: 'JEPA architecture, €3B pre-product, Turing Award founder',
+    thesis:
+      "The highest-risk, highest-conviction play. If JEPA delivers robust controllability and physical understanding, AMI captures robotics, healthcare, and industrial verticals where LLM-style hallucinations are disqualifying. If it doesn't, €3B on a pre-product thesis.",
+  },
+  {
+    company: 'NVIDIA Cosmos',
+    archetype: 'Open-Source Commoditizer',
+    signal: 'Free models → GPU revenue, 2M+ downloads',
+    thesis:
+      "NVIDIA's strategy is elegant: give away foundation models for free, then monetize via GPU sales and DGX Cloud. Cosmos (2B-14B params, 9,000T tokens) with Apache 2.0 licensing validates the market while compressing the differentiation timeline for every startup in the space.",
+  },
+  {
+    company: 'Tencent',
+    archetype: 'Open-Source Commoditizer',
+    signal: '3M+ HuggingFace downloads, triple distribution',
+    thesis:
+      "Tencent's triple distribution — open source + Tencent Cloud API + consumer web — is the most aggressive go-to-market in the space. Hunyuan3D with PBR materials, Unity China and Bambu Lab partnerships, and 150+ enterprise customers in China. A commoditizer that's already monetizing.",
+  },
+  {
+    company: 'General Intuition',
+    archetype: 'Data-Moat Specialist',
+    signal: '3.8B gaming clips, OpenAI offered $500M for data',
+    thesis:
+      "GI's 3.8B action-labeled gaming clips from Medal are irreplaceable — OpenAI reportedly offered $500M for the dataset. The DIAMOND world model architecture combined with this unique training data creates a moat that no amount of compute can replicate. Public Benefit Corporation launching H1 2026.",
+  },
+  {
+    company: 'Decart',
+    archetype: 'Viral Consumer Specialist',
+    signal: '1M users in 72hrs with Oasis, $153M raised',
+    thesis:
+      "Decart generated 1M users in 72 hours with Oasis — the fastest viral adoption in world model history — and burns less than $10M of its $153M raised. Proves that consumer-facing world model products can achieve explosive distribution. Unique data from user interactions may matter more than model architecture.",
+  },
+];
+
+export const strategicTimeline = [
+  {
+    when: 'Now (Q1 2026)',
+    milestone: 'APIs launching, $3.4B deployed',
+    detail: 'World Labs Jan 21, Odyssey Jan 23',
+    implication: 'The starting gun has fired. Commercial execution begins now.',
+  },
+  {
+    when: 'End of 2026',
+    milestone: 'Product-market fit or bust',
+    detail: '1 enterprise customer, $1-5M ARR, 1M+ proprietary examples',
+    implication: 'Product-market fit must be proven. No more "research-stage" positioning.',
+  },
+  {
+    when: 'End of 2027',
+    milestone: 'Foundation models commoditize',
+    detail: 'Open-source catches up',
+    implication: '$10-30M ARR with 120%+ NRR, or you\'re competing on price against free.',
+  },
+  {
+    when: '2028+',
+    milestone: 'Platform consolidation',
+    detail: 'Snowflake-scale outcomes for workflow owners',
+    implication: 'The companies that own specific verticals (VFX, gaming, robotics sim) build $1B+ businesses above the commodity model layer.',
   },
 ];
 
 export const marketCategories = {
   'Pure-Play Startups (Interview Targets)': ['World Labs', 'Odyssey', 'SpAItial'],
-  'Pure-Play Startups (Adjacent)': ['Runway', 'AMI Labs', 'General Intuition', 'Iconic AI', 'Lucid'],
+  'Pure-Play Startups (Adjacent)': ['Runway', 'AMI Labs', 'General Intuition', 'Decart', 'Iconic AI', 'Lucid'],
   'Big Tech / Platform': ['NVIDIA Cosmos', 'Google DeepMind Genie 3', 'Meta', 'Tencent'],
 };

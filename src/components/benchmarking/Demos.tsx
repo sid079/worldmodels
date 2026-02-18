@@ -40,6 +40,7 @@ export default function Demos() {
               const isTested = !assessment.notAvailableReason
               const isSelected = selectedSlug === assessment.companySlug
               const isCompareSelected = compareSlugs.has(assessment.companySlug)
+              const hasRecording = assessment.recordings.length > 0
               return (
                 <button
                   key={assessment.companySlug}
@@ -47,9 +48,17 @@ export default function Demos() {
                   className={`flex shrink-0 flex-col items-start gap-1 rounded-r px-3 py-2.5 text-left transition-colors hover:bg-surface/50 lg:w-full ${viewMode === 'single' && isSelected ? 'border-l-[3px] border-accent bg-surface/50' : viewMode === 'compare' && isCompareSelected ? 'border-l-[3px] border-accent bg-surface/50' : 'border-l-[3px] border-transparent'}`}
                 >
                   <span className="font-mono text-sm text-text-primary">{getCompanyName(assessment.companySlug)}</span>
-                  <span className={`rounded px-1.5 py-0.5 font-mono text-[10px] ${isTested ? 'bg-accent/20 text-accent' : 'bg-[rgba(255,255,255,0.06)] text-text-muted'}`}>
-                    {isTested ? 'Tested ✓' : 'Not Available'}
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    {hasRecording && (
+                      <span className="flex items-center gap-1 rounded bg-red-500/20 px-1.5 py-0.5 font-mono text-[10px] text-red-400">
+                        <span className="inline-block h-1.5 w-1.5 rounded-full bg-red-500" />
+                        Recorded
+                      </span>
+                    )}
+                    <span className={`rounded px-1.5 py-0.5 font-mono text-[10px] ${isTested ? 'bg-accent/20 text-accent' : 'bg-[rgba(255,255,255,0.06)] text-text-muted'}`}>
+                      {isTested ? 'Tested' : 'Not Available'}
+                    </span>
+                  </div>
                 </button>
               )
             })}

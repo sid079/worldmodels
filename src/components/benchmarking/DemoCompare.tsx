@@ -1,7 +1,7 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import type { DemoAssessment } from '../../data/demos'
 import { companies } from '../../data/companies'
-import { ScoreBars } from './ScoreBar'
 
 interface DemoCompareProps {
   assessments: DemoAssessment[]
@@ -11,32 +11,22 @@ function getCompanyName(slug: string): string {
   return companies.find((c) => c.id === slug)?.overview.name ?? slug
 }
 
-function getYouTubeEmbedUrl(src: string): string | null {
-  const m = src.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
-  return m ? `https://www.youtube.com/embed/${m[1]}?rel=0` : null
-}
-
-function isYouTubeUrl(src: string): boolean {
-  return /youtube\.com|youtu\.be/i.test(src)
-}
-
-function VideoEmbed({ src, caption }: { src: string; caption: string }) {
-  if (isYouTubeUrl(src)) {
-    const embedUrl = getYouTubeEmbedUrl(src)
-    if (embedUrl)
-      return (
-        <div className="overflow-hidden rounded border border-[rgba(255,255,255,0.08)]">
-          <div className="aspect-video">
-            <iframe src={embedUrl} title={caption} className="h-full w-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
-          </div>
-          <p className="px-2 py-1 font-mono text-[10px] text-text-muted">{caption}</p>
-        </div>
-      )
-  }
+function RecordingEmbed({ src, title }: { src: string; title: string }) {
+  const [error, setError] = useState(false)
+  const normalizedSrc = src.startsWith('/') ? src : `/${src}`
   return (
-    <div className="overflow-hidden rounded border border-[rgba(255,255,255,0.08)]">
-      <video src={src.startsWith('/') ? src : `/${src}`} controls className="w-full" playsInline />
-      <p className="px-2 py-1 font-mono text-[10px] text-text-muted">{caption}</p>
+    <div className="overflow-hidden rounded border border-accent/30">
+      {error ? (
+        <div className="flex aspect-video items-center justify-center bg-surface/50">
+          <p className="font-mono text-[10px] text-text-muted">Recording not found</p>
+        </div>
+      ) : (
+        <video src={normalizedSrc} controls className="w-full" playsInline onError={() => setError(true)} />
+      )}
+      <div className="flex items-center gap-1.5 px-2 py-1">
+        <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
+        <p className="font-mono text-[10px] text-text-primary">{title}</p>
+      </div>
     </div>
   )
 }
@@ -58,42 +48,30 @@ export default function DemoCompare({ assessments }: DemoCompareProps) {
         <div key={assessment.companySlug} className="flex flex-col rounded-lg border border-[rgba(255,255,255,0.06)] bg-surface/30 p-5">
           <h3 className="mb-1 font-serif text-lg text-accent">{getCompanyName(assessment.companySlug)}</h3>
           <p className="mb-3 font-mono text-xs text-text-muted">{assessment.productTested} • {assessment.accessMethod}</p>
-          {assessment.videos.length > 0 && (
+
+          {assessment.recordings.length > 0 && (
             <div className="mb-4 space-y-2">
-              {assessment.videos.slice(0, 2).map((v) => (
-                <VideoEmbed key={v.src} src={v.src} caption={v.caption} />
+              {assessment.recordings.slice(0, 1).map((r) => (
+                <RecordingEmbed key={r.src} src={r.src} title={r.title} />
               ))}
             </div>
           )}
-          <div className="mb-4 flex-1">
-            <p className="mb-2 font-mono text-[10px] font-semibold uppercase tracking-wider text-text-muted">Scores</p>
-            <ScoreBars scores={assessment.scores} compact />
-          </div>
-          <div className="grid grid-cols-2 gap-3 border-t border-[rgba(255,255,255,0.06)] pt-4">
-            <div>
-              <p className="mb-1 font-mono text-[10px] text-accent">Strengths</p>
-              <ul className="space-y-0.5">
-                {assessment.strengths.slice(0, 2).map((s, i) => (
-                  <li key={i} className="flex gap-1.5 font-mono text-[11px] text-text-secondary">
-                    <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-accent" />
-                    {s}
-                  </li>
-                ))}
-              </ul>
+
+          {assessment.referenceImage ? (
+            <div className="mb-4">
+              <p className="mb-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-text-muted">Reference</p>
+              <div className="overflow-hidden rounded border border-[rgba(255,255,255,0.08)]">
+                <img src={assessment.referenceImage} alt={`Reference for ${getCompanyName(assessment.companySlug)}`} className="w-full" />
+              </div>
             </div>
-            <div>
-              <p className="mb-1 font-mono text-[10px] text-[#FF6B6B]">Weaknesses</p>
-              <ul className="space-y-0.5">
-                {assessment.weaknesses.slice(0, 2).map((w, i) => (
-                  <li key={i} className="flex gap-1.5 font-mono text-[11px] text-text-secondary">
-                    <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-[#FF6B6B]" />
-                    {w}
-                  </li>
-                ))}
-              </ul>
+          ) : (
+            <div className="mb-4">
+              <p className="mb-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-text-muted">Reference</p>
+              <div className="flex min-h-[60px] items-center justify-center rounded border border-dashed border-[rgba(255,255,255,0.1)] bg-surface/10">
+                <p className="font-mono text-[10px] text-text-muted">N/A</p>
+              </div>
             </div>
-          </div>
-          {assessment.bestFor && <p className="mt-3 font-mono text-[11px] text-accent">Best for: {assessment.bestFor}</p>}
+          )}
         </div>
       ))}
     </motion.div>

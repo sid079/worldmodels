@@ -15,8 +15,8 @@ export default {
         'accent-mint': '#00FFD1',
         text: {
           primary: '#FAFAFA',
-          secondary: '#A1A1AA',
-          muted: '#52525B',
+          secondary: '#B8B8C2',
+          muted: '#7E7E8A',
         }
       },
       fontFamily: {
