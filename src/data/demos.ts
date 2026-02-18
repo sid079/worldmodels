@@ -25,7 +25,7 @@ export const demoAssessments: DemoAssessment[] = [
     dateTested: 'February 2026',
     accessMethod: 'Pro Tier ($35/mo)',
     recordings: [
-      { src: '/demos/world-labs/World Labs.mov', title: 'Marble Walkthrough', description: 'Full walkthrough of World Labs Marble — image-to-3D world generation, camera controls, and export pipeline' },
+      { src: '/demos/world-labs/World Labs.mp4', title: 'Marble Walkthrough', description: 'Full walkthrough of World Labs Marble — image-to-3D world generation, camera controls, and export pipeline' },
     ],
     referenceImage: '/demos/reference/Test Image.jpg',
     videos: [],
@@ -36,7 +36,7 @@ export const demoAssessments: DemoAssessment[] = [
     dateTested: 'February 2026',
     accessMethod: 'Free Experience + API',
     recordings: [
-      { src: '/demos/odyssey/Odyssey.mov', title: 'Odyssey Explorer Demo', description: 'Hands-on with Odyssey Explorer — real-time world generation and interactive navigation' },
+      { src: '/demos/odyssey/Odyssey.mp4', title: 'Odyssey Explorer Demo', description: 'Hands-on with Odyssey Explorer — real-time world generation and interactive navigation' },
     ],
     referenceImage: '/demos/reference/Test Image.jpg',
     videos: [],
@@ -47,7 +47,7 @@ export const demoAssessments: DemoAssessment[] = [
     dateTested: 'February 2026',
     accessMethod: 'Public Gallery (Closed Beta waitlisted)',
     recordings: [
-      { src: '/demos/spaitial/Spaitial.mov', title: 'SpAItial Echo Demo', description: 'Testing SpAItial Echo — 3D scene generation from text and image prompts' },
+      { src: '/demos/spaitial/Spaitial.mp4', title: 'SpAItial Echo Demo', description: 'Testing SpAItial Echo — 3D scene generation from text and image prompts' },
     ],
     referenceImage: null,
     videos: [],
@@ -58,7 +58,7 @@ export const demoAssessments: DemoAssessment[] = [
     dateTested: 'February 2026',
     accessMethod: 'Pro Tier ($28/mo)',
     recordings: [
-      { src: '/demos/runway/Runway.mov', title: 'Runway Gen-4.5 Demo', description: 'Testing Runway Gen-4.5 and GWM Worlds — video generation with world consistency and camera control' },
+      { src: '/demos/runway/Runway.mp4', title: 'Runway Gen-4.5 Demo', description: 'Testing Runway Gen-4.5 and GWM Worlds — video generation with world consistency and camera control' },
     ],
     referenceImage: '/demos/reference/Test Image.jpg',
     videos: [],

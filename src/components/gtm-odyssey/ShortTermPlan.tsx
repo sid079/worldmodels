@@ -1,32 +1,7 @@
 import { useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { icpSegments, tierConfig } from '../../data/odysseyGTM'
+import { icpSegments } from '../../data/odysseyGTM'
 import type { Tier } from '../../data/odysseyGTM'
-
-function ConvictionStars({ count }: { count: number }) {
-  return (
-    <span className="inline-flex gap-0.5">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <span key={i} className={i <= count ? 'text-accent' : 'text-text-muted/30'}>
-          ★
-        </span>
-      ))}
-    </span>
-  )
-}
-
-function TierBadge({ tier }: { tier: Tier }) {
-  const cfg = tierConfig[tier]
-  return (
-    <span
-      className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 font-mono text-[10px]"
-      style={{ backgroundColor: `${cfg.color}15`, color: cfg.color }}
-    >
-      <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: cfg.color }} />
-      {cfg.label}
-    </span>
-  )
-}
 
 interface FlatRow {
   targetName: string

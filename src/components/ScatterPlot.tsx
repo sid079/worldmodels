@@ -223,7 +223,7 @@ export default function ScatterPlot() {
         </text>
 
         {/* Data points */}
-        {data.map((d, _i, arr) => {
+        {data.map((d) => {
           const cx = scaleX(d.funding)
           const cy = scaleY(d.teamSize)
           const hovered = hoveredId === d.id
@@ -231,7 +231,7 @@ export default function ScatterPlot() {
           const isTarget = d.category === 'interview-target'
 
           // Manual label offsets for crowded clusters
-          const labelOverrides: Record<string, { dx: number; dy: number; anchor: string }> = {
+          const labelOverrides: Record<string, { dx: number; dy: number; anchor: 'start' | 'middle' | 'end' }> = {
             'lucid':    { dx: -12, dy: -12, anchor: 'end' },
             'spaitial': { dx: 14, dy: -10, anchor: 'start' },
             'iconic-ai':{ dx: 12, dy: 4,   anchor: 'start' },
@@ -239,7 +239,7 @@ export default function ScatterPlot() {
           const override = labelOverrides[d.id]
           const labelDx = override?.dx ?? 0
           const labelDy = override?.dy ?? -15
-          const anchor = override?.anchor ?? 'middle'
+          const anchor: 'start' | 'middle' | 'end' = override?.anchor ?? 'middle'
 
           return (
             <g

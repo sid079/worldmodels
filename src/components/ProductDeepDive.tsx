@@ -125,7 +125,7 @@ export default function ProductDeepDive() {
     return () => {
       if (odysseyRef.current) {
         odysseyRef.current.endStream().catch(() => {})
-        odysseyRef.current.disconnect().catch(() => {})
+        odysseyRef.current.disconnect()
         odysseyRef.current = null
       }
     }

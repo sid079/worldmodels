@@ -1,15 +1,13 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Overview from './gtm-odyssey/Overview'
-import ShortTermPlan from './gtm-odyssey/ShortTermPlan'
 import EventsConferences from './gtm-odyssey/EventsConferences'
 import ProductDeepDive from './ProductDeepDive'
 
-type SubTab = 'overview' | 'short-term' | 'events' | 'custom-demos'
+type SubTab = 'overview' | 'events' | 'custom-demos'
 
 const subTabs: { id: SubTab; label: string }[] = [
   { id: 'overview', label: 'Overview' },
-  { id: 'short-term', label: 'Short Term Plan' },
   { id: 'events', label: 'Events & Conferences' },
   { id: 'custom-demos', label: 'Custom Demos' },
 ]
@@ -46,17 +44,6 @@ export default function GTMForOdyssey() {
             transition={{ duration: 0.2, ease: 'easeOut' }}
           >
             <Overview />
-          </motion.div>
-        )}
-        {activeSubTab === 'short-term' && (
-          <motion.div
-            key="short-term"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-          >
-            <ShortTermPlan />
           </motion.div>
         )}
         {activeSubTab === 'events' && (
